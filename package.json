@@ -1,0 +1,8 @@
+{
+  "name": "sora-website",
+  "version": "1.0.0",
+  "dependencies": {
+    "@google-cloud/text-to-speech": "^5.0.0",
+    "@google/generative-ai": "^0.21.0"
+  }
+}

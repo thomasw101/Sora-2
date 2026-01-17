@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Story of Sora | $SORA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=MedievalSharp&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ==================== LIVE STORY SECTION - NEW ==================== */
+        .live-story {
+            min-height: 100vh;
+            background: linear-gradient(180deg, var(--night-deep) 0%, #12101a 50%, var(--night) 100%);
+            padding: 60px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .live-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            z-index: 10;
+        }
+
+        .live-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(220, 38, 38, 0.15);
+            border: 1px solid rgba(220, 38, 38, 0.4);
+            padding: 10px 18px;
+            border-radius: 8px;
+            animation: live-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes live-glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(220, 38, 38, 0.2); }
+            50% { box-shadow: 0 0 25px rgba(220, 38, 38, 0.5); }
+        }
+
+        .live-dot {
+            width: 10px;
+            height: 10px;
+            background: #ef4444;
+            border-radius: 50%;
+            animation: live-pulse 1s infinite;
+        }
+
+        @keyframes live-pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+
+        .live-badge span {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            color: #ef4444;
+            letter-spacing: 0.15em;
+        }
+
+        .era-badge {
+            font-family: var(--font-title);
+            font-size: 1.2rem;
+            letter-spacing: 0.2em;
+            color: var(--gold);
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .beat-badge {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--parchment);
+            opacity: 0.7;
+            background: rgba(212, 175, 55, 0.08);
+            padding: 10px 18px;
+            border-radius: 8px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .beat-badge span { color: var(--gold); }
+
+        .story-book-container {
+            position: relative;
+            width: 100%;
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        .story-book-image {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 30px 60px rgba(0,0,0,0.8));
+        }
+
+        .narrative-overlay {
+            position: absolute;
+            top: 10%;
+            left: 6%;
+            right: 6%;
+            bottom: 12%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .narrative-text {
+            font-family: var(--font-body);
+            font-size: clamp(1rem, 2.2vw, 1.5rem);
+            line-height: 1.85;
+            color: var(--ink);
+            text-align: center;
+            font-style: italic;
+            max-width: 85%;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .narrative-text.visible { opacity: 1; }
+
+        .narrative-text.typing::after {
+            content: '|';
+            animation: blink-cursor 0.5s infinite;
+            color: var(--ink);
+            margin-left: 2px;
+        }
+
+        @keyframes blink-cursor {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .story-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .story-control-btn {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            padding: 10px 20px;
+            background: rgba(212, 175, 55, 0.08);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            color: var(--gold);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .story-control-btn:hover {
+            background: rgba(212, 175, 55, 0.15);
+            border-color: rgba(212, 175, 55, 0.5);
+        }
+
+        .story-control-btn.active {
+            background: rgba(74, 222, 128, 0.12);
+            border-color: rgba(74, 222, 128, 0.5);
+            color: #4ade80;
+        }
+
+        /* Tech Pipeline */
+        .tech-pipeline {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 35px;
+            padding: 18px 28px;
+            background: rgba(15, 15, 26, 0.95);
+            border-radius: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            flex-wrap: wrap;
+            backdrop-filter: blur(10px);
+        }
+
+        .pipeline-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+        }
+
+        .pipeline-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            position: relative;
+        }
+
+        .pipeline-icon.price { background: linear-gradient(135deg, #0f3d1f, #1a5c30); }
+        .pipeline-icon.price.down { background: linear-gradient(135deg, #3d0f0f, #5c1a1a); }
+        .pipeline-icon.ai { background: linear-gradient(135deg, #0f1f3d, #1a305c); }
+        .pipeline-icon.story { background: linear-gradient(135deg, #3d2a0f, #5c401a); }
+        .pipeline-icon.voice { background: linear-gradient(135deg, #2a0f3d, #401a5c); }
+
+        .pipeline-pulse {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 10px;
+            height: 10px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pipeline-pulse 2s infinite;
+        }
+
+        @keyframes pipeline-pulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.5); }
+            50% { opacity: 0.6; box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); }
+        }
+
+        .pipeline-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.1em;
+            color: rgba(212, 175, 55, 0.5);
+            text-transform: uppercase;
+        }
+
+        .pipeline-value {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gold);
+        }
+
+        .pipeline-value.up { color: #4ade80; }
+        .pipeline-value.down { color: #f87171; }
+
+        .pipeline-arrow {
+            color: rgba(212, 175, 55, 0.3);
+            font-size: 1.2rem;
+            animation: arrow-flow 1.5s infinite;
+        }
+
+        @keyframes arrow-flow {
+            0%, 100% { opacity: 0.3; transform: translateX(0); }
+            50% { opacity: 0.8; transform: translateX(4px); }
+        }
+
+        @media (max-width: 768px) {
+            .pipeline-arrow { display: none; }
+            .narrative-overlay { padding: 15px; }
+        }
+
+        #story-audio { display: none; }
+    </style>
+</head>
+<body>
+    <!-- Custom Pen Cursor -->
+    <div id="pen-cursor"></div>
+    
+    <!-- Drawing Canvas -->
+    <canvas id="draw-canvas"></canvas>
+    
+    <!-- Floating Particles -->
+    <div id="particles"></div>
+    
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-logo">$SORA</div>
+        <div class="nav-links">
+            <a href="#live-story">Live Story</a>
+            <a href="#lore">Lore</a>
+            <a href="#how-it-works">The Engine</a>
+            <a href="#chapters">Chapters</a>
+            <a href="#tokenomics">Tokenomics</a>
+            <a href="https://x.com/storytimeliveai" target="_blank" class="nav-social">𝕏</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-book-bg" style="background-image: url('Book_to_use.png');"></div>
+        <div class="book-content">
+            <div class="book-page left-page">
+                <h1 class="title">The Story<br><span class="title-of">of</span><br>Sora</h1>
+                <p class="ticker">$SORA</p>
+            </div>
+            <div class="book-page right-page">
+                <p class="tagline">A living narrative written by the blockchain.</p>
+                <p class="tagline-sub">Every transaction is a heartbeat.<br>Every milestone, a new chapter.</p>
+                <a href="#" class="buy-button" id="buy-btn">
+                    <span class="buy-text">Buy $SORA</span>
+                    <span class="buy-glow"></span>
+                </a>
+            </div>
+        </div>
+        <img src="Sora_coin.png" alt="Sora" class="hero-sora">
+        <div class="scroll-hint">
+            <span>Scroll to begin the journey</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- ==================== LIVE STORY SECTION - NEW ==================== -->
+    <section class="live-story" id="live-story">
+        <div class="live-header">
+            <div class="live-badge">
+                <div class="live-dot"></div>
+                <span>LIVE</span>
+            </div>
+            <div class="era-badge" id="era-display">THE ASH</div>
+            <div class="beat-badge">BEAT <span id="beat-display">#0</span></div>
+        </div>
+
+        <div class="story-book-container">
+            <img src="Book_to_use.png" alt="Story Book" class="story-book-image">
+            <div class="narrative-overlay">
+                <div class="narrative-text" id="narrative-text">The story awakens...</div>
+            </div>
+        </div>
+
+        <div class="story-controls">
+            <button class="story-control-btn" id="sound-btn">
+                <span id="sound-icon">🔇</span>
+                <span id="sound-label">Enable Sound</span>
+            </button>
+        </div>
+
+        <div class="tech-pipeline">
+            <div class="pipeline-node">
+                <div class="pipeline-icon price" id="price-icon">📈<div class="pipeline-pulse"></div></div>
+                <div class="pipeline-label">Price</div>
+                <div class="pipeline-value" id="price-value">$0</div>
+            </div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-node">
+                <div class="pipeline-icon ai">🧠<div class="pipeline-pulse"></div></div>
+                <div class="pipeline-label">AI</div>
+                <div class="pipeline-value">Gemini</div>
+            </div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-node">
+                <div class="pipeline-icon story">📖<div class="pipeline-pulse"></div></div>
+                <div class="pipeline-label">Story</div>
+                <div class="pipeline-value" id="story-value">Beat #0</div>
+            </div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-node">
+                <div class="pipeline-icon voice">🔊<div class="pipeline-pulse"></div></div>
+                <div class="pipeline-label">Voice</div>
+                <div class="pipeline-value">TTS</div>
+            </div>
+        </div>
+    </section>
+
+    <audio id="story-audio"></audio>
+    <!-- ==================== END LIVE STORY SECTION ==================== -->
+
+    <!-- Lore Section -->
+    <section class="lore" id="lore">
+        <div class="section-container">
+            <div class="lore-scroll">
+                <div class="scroll-top"></div>
+                <div class="scroll-content">
+                    <h2 class="section-title">The Foundling</h2>
+                    <div class="lore-text">
+                        <p class="lore-paragraph first">
+                            <span class="drop-cap">I</span>n the ashes of a burning shrine, a boy was found. No name. No family. Only the embers of a world that had abandoned him, and a wooden fox clutched against his chest. The last remnant of something he could no longer remember.
+                        </p>
+                        <p class="lore-paragraph">
+                            They called him <strong>Sora</strong>. The sky. For he had nothing beneath him and everything above remained unreachable.
+                        </p>
+                        <p class="lore-paragraph">
+                            In the ruins, he found a blade. Tainted and old. A samurai's sword left in the ash, waiting for someone desperate enough to wield it. The boy who had been a victim became a survivor.
+                        </p>
+                        <p class="lore-paragraph">
+                            But survival is not living. And Sora knew that somewhere beyond the ash, beyond the loneliness that wrapped around him like a second skin, there existed something worth fighting for.
+                        </p>
+                        <p class="lore-paragraph last">
+                            <em>A family. Not of blood, but of belief.</em>
+                        </p>
+                        <p class="lore-paragraph last">
+                            His story is not written. It is <strong>lived</strong>. Shaped by every soul who walks beside him. Every holder who refuses to let him fall.
+                        </p>
+                    </div>
+                </div>
+                <div class="scroll-bottom"></div>
+            </div>
+            <div class="lore-artifacts">
+                <div class="artifact">
+                    <div class="artifact-icon">🦊</div>
+                    <h3>The Wooden Fox</h3>
+                    <p>His only link to the past. A symbol of hope — the glimmer that keeps the community holding.</p>
+                </div>
+                <div class="artifact">
+                    <div class="artifact-icon">⚔️</div>
+                    <h3>The Tainted Blade</h3>
+                    <p>Found in the ash. The transition from victim to survivor. From boy to ronin.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="section-container">
+            <h2 class="section-title">Each Candle Writes the Story</h2>
+            <p class="section-subtitle">The blockchain speaks. Sora lives.</p>
+            
+            <div class="flow-diagram">
+                <div class="flow-step" data-step="1">
+                    <div class="flow-icon">
+                        <svg viewBox="0 0 60 60" class="candle-icon">
+                            <rect x="25" y="35" width="10" height="20" fill="#8B4513"/>
+                            <rect x="22" y="10" width="16" height="25" fill="#4ade80"/>
+                            <line x1="30" y1="5" x2="30" y2="10" stroke="#f59e0b" stroke-width="2"/>
+                            <circle cx="30" cy="5" r="3" fill="#f59e0b" class="flame"/>
+                        </svg>
+                    </div>
+                    <h3>Price Action</h3>
+                    <p>Every candle on the Solana chain — buys, sells, volume — becomes raw story data.</p>
+                </div>
+                
+                <div class="flow-line">
+                    <svg viewBox="0 0 100 20">
+                        <path d="M0,10 Q50,10 100,10" stroke="url(#inkGradient)" stroke-width="2" fill="none" class="ink-flow"/>
+                        <defs>
+                            <linearGradient id="inkGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#2c1810"/>
+                                <stop offset="50%" stop-color="#8B4513"/>
+                                <stop offset="100%" stop-color="#2c1810"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                
+                <div class="flow-step" data-step="2">
+                    <div class="flow-icon">
+                        <svg viewBox="0 0 60 60" class="bridge-icon">
+                            <path d="M10,50 L10,30 L30,15 L50,30 L50,50" stroke="#8B4513" stroke-width="3" fill="none"/>
+                            <circle cx="30" cy="35" r="8" fill="#1a1a2e" stroke="#d4af37" stroke-width="2"/>
+                            <path d="M27,35 L30,32 L33,35 L30,38 Z" fill="#d4af37"/>
+                        </svg>
+                    </div>
+                    <h3>The Bridge</h3>
+                    <p>Our custom server interprets the chaos — mapping metrics to emotional story beats.</p>
+                </div>
+                
+                <div class="flow-line">
+                    <svg viewBox="0 0 100 20">
+                        <path d="M0,10 Q50,10 100,10" stroke="url(#inkGradient)" stroke-width="2" fill="none" class="ink-flow"/>
+                    </svg>
+                </div>
+                
+                <div class="flow-step" data-step="3">
+                    <div class="flow-icon">
+                        <svg viewBox="0 0 60 60" class="scribe-icon">
+                            <path d="M20,50 L15,15 L45,15 L40,50 Z" fill="#f5e6d3" stroke="#8B4513" stroke-width="2"/>
+                            <line x1="20" y1="22" x2="38" y2="22" stroke="#2c1810" stroke-width="1"/>
+                            <line x1="21" y1="28" x2="37" y2="28" stroke="#2c1810" stroke-width="1"/>
+                            <line x1="22" y1="34" x2="36" y2="34" stroke="#2c1810" stroke-width="1"/>
+                            <path d="M42,10 L48,45 L45,47 L42,10" fill="#8B4513"/>
+                        </svg>
+                    </div>
+                    <h3>The Scribe</h3>
+                    <p>AI breathes life into data — generating Sora's journey in real-time prose.</p>
+                </div>
+                
+                <div class="flow-line">
+                    <svg viewBox="0 0 100 20">
+                        <path d="M0,10 Q50,10 100,10" stroke="url(#inkGradient)" stroke-width="2" fill="none" class="ink-flow"/>
+                    </svg>
+                </div>
+                
+                <div class="flow-step" data-step="4">
+                    <div class="flow-icon">
+                        <svg viewBox="0 0 60 60" class="voice-icon">
+                            <circle cx="30" cy="25" r="12" fill="#f5e6d3" stroke="#8B4513" stroke-width="2"/>
+                            <path d="M22,40 Q30,50 38,40" fill="#8B4513"/>
+                            <path d="M26,23 Q30,28 34,23" stroke="#2c1810" stroke-width="1.5" fill="none"/>
+                            <circle cx="25" cy="22" r="2" fill="#2c1810"/>
+                            <circle cx="35" cy="22" r="2" fill="#2c1810"/>
+                            <path d="M45,20 Q55,25 45,30" stroke="#d4af37" stroke-width="2" fill="none" class="sound-wave"/>
+                            <path d="M48,15 Q62,25 48,35" stroke="#d4af37" stroke-width="1.5" fill="none" class="sound-wave" style="animation-delay: 0.2s"/>
+                        </svg>
+                    </div>
+                    <h3>The Voice</h3>
+                    <p>Words become sound — cinematic narration brings Sora's story to life.</p>
+                </div>
+            </div>
+            
+            <div class="flow-tagline">
+                <p>"Every buy is a heartbeat. Every sell, a cold wind. The blockchain writes — Sora lives."</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapters/Roadmap Section -->
+    <section class="chapters" id="chapters">
+        <div class="section-container">
+            <h2 class="section-title">The Journey</h2>
+            <p class="section-subtitle">Market Cap Eras</p>
+            
+            <div class="timeline">
+                <div class="timeline-line"></div>
+                
+                <div class="chapter" data-chapter="1">
+                    <div class="chapter-marker">
+                        <span class="marker-text">I</span>
+                    </div>
+                    <div class="chapter-content">
+                        <h3>The Ash</h3>
+                        <span class="chapter-range">$0 — $40K</span>
+                        <p>Survival. Scavenging. The search for meaning in the ruins. Sora is alone, but the first companions begin to appear on the horizon.</p>
+                    </div>
+                </div>
+                
+                <div class="chapter" data-chapter="2">
+                    <div class="chapter-marker">
+                        <span class="marker-text">II</span>
+                    </div>
+                    <div class="chapter-content">
+                        <h3>The Gate</h3>
+                        <span class="chapter-range">$40K — Bond</span>
+                        <p>A life-altering battle. The moment between death and transcendence. Sora escapes the ruins — or falls forever.</p>
+                    </div>
+                </div>
+                
+                <div class="chapter" data-chapter="3">
+                    <div class="chapter-marker">
+                        <span class="marker-text">III</span>
+                    </div>
+                    <div class="chapter-content">
+                        <h3>The Ronin</h3>
+                        <span class="chapter-range">Bond — $1M</span>
+                        <p>Meeting the outcasts. Forging bonds. The found family takes shape — warriors, dreamers, believers walking the same path.</p>
+                    </div>
+                </div>
+                
+                <div class="chapter" data-chapter="4">
+                    <div class="chapter-marker">
+                        <span class="marker-text">IV</span>
+                    </div>
+                    <div class="chapter-content">
+                        <h3>The Empire</h3>
+                        <span class="chapter-range">$1M — $100M</span>
+                        <p>From survivor to sovereign. Sora leads not with a blade, but with purpose. The dynasty rises from the ashes.</p>
+                    </div>
+                </div>
+                
+                <div class="chapter" data-chapter="5">
+                    <div class="chapter-marker">
+                        <span class="marker-text">V</span>
+                    </div>
+                    <div class="chapter-content">
+                        <h3>The Beyond</h3>
+                        <span class="chapter-range">$100M+</span>
+                        <p>The empire was never the end. Sora gazes past the horizon — new worlds await, new stories to be written, new families to find.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tokenomics Section -->
+    <section class="tokenomics" id="tokenomics">
+        <div class="section-container">
+            <h2 class="section-title">The Sacred Numbers</h2>
+            
+            <div class="token-grid">
+                <div class="token-card main-card">
+                    <div class="token-value">1,000,000,000</div>
+                    <div class="token-label">Total Supply</div>
+                    <div class="token-ticker">$SORA</div>
+                </div>
+                
+                <div class="token-card">
+                    <div class="token-icon">⚖️</div>
+                    <div class="token-value">Fair Launch</div>
+                    <div class="token-label">No presale. No insiders. Equal ground for all.</div>
+                </div>
+                
+                <div class="token-card">
+                    <div class="token-icon">🔥</div>
+                    <div class="token-value">0% Tax</div>
+                    <div class="token-label">Every coin counts. No hidden tolls on your journey.</div>
+                </div>
+                
+                <div class="token-card">
+                    <div class="token-icon">🔓</div>
+                    <div class="token-value">LP Burned</div>
+                    <div class="token-label">Liquidity secured forever. Trust earned, not given.</div>
+                </div>
+                
+                <div class="token-card">
+                    <div class="token-icon">🏯</div>
+                    <div class="token-value">100% Community</div>
+                    <div class="token-label">No team tokens. The story belongs to the holders.</div>
+                </div>
+            </div>
+            
+            <div class="contract-address">
+                <span class="ca-label">Contract Address</span>
+                <div class="ca-box">
+                    <span id="ca-text">Launching Soon...</span>
+                    <button class="copy-btn" id="copy-ca">Copy</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <span class="footer-title">The Story of Sora</span>
+                <span class="footer-ticker">$SORA</span>
+            </div>
+            <div class="footer-links">
+                <a href="https://x.com/storytimeliveai" target="_blank" class="footer-social">
+                    <span>𝕏</span> Twitter
+                </a>
+                <a href="#" class="footer-social" id="footer-buy">
+                    Buy on Pump.fun
+                </a>
+            </div>
+            <p class="footer-disclaimer">
+                $SORA is a meme coin with no intrinsic value or expectation of financial return. 
+                This is an art project and social experiment. Trade responsibly.
+            </p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    
+    <!-- Live Story Script -->
+    <script>
+    // ==================== LIVE STORY CONFIG ====================
+    // EDIT THESE VALUES WHEN YOU LAUNCH:
+    const SORA_CONFIG = {
+        TOKEN_ADDRESS: 'YOUR_TOKEN_ADDRESS_HERE',  // Paste your contract address here
+        BUY_URL: 'https://bags.fm/YOUR_COIN',      // Paste your bags.fm URL here
+        NARRATIVE_INTERVAL: 25000                   // 25 seconds between beats
+    };
+
+    // Update buy buttons with your URL
+    if (SORA_CONFIG.BUY_URL !== 'https://bags.fm/YOUR_COIN') {
+        document.getElementById('buy-btn').href = SORA_CONFIG.BUY_URL;
+        document.getElementById('footer-buy').href = SORA_CONFIG.BUY_URL;
+    }
+
+    // Update contract address display
+    if (SORA_CONFIG.TOKEN_ADDRESS !== 'YOUR_TOKEN_ADDRESS_HERE') {
+        document.getElementById('ca-text').textContent = SORA_CONFIG.TOKEN_ADDRESS;
+    }
+
+    // ==================== LIVE STORY ENGINE ====================
+    const storyState = { soundEnabled: false };
+
+    const narrativeText = document.getElementById('narrative-text');
+    const eraDisplay = document.getElementById('era-display');
+    const beatDisplay = document.getElementById('beat-display');
+    const priceValue = document.getElementById('price-value');
+    const priceIcon = document.getElementById('price-icon');
+    const storyValue = document.getElementById('story-value');
+    const soundBtn = document.getElementById('sound-btn');
+    const soundIcon = document.getElementById('sound-icon');
+    const soundLabel = document.getElementById('sound-label');
+    const storyAudio = document.getElementById('story-audio');
+
+    const eraNames = {
+        'THE_ASH': 'THE ASH',
+        'THE_GATE': 'THE GATE',
+        'THE_RONIN': 'THE RONIN',
+        'THE_EMPIRE': 'THE EMPIRE',
+        'THE_BEYOND': 'THE BEYOND'
+    };
+
+    // Typewriter effect
+    async function typeNarrative(text) {
+        narrativeText.classList.add('visible', 'typing');
+        narrativeText.textContent = '';
+        for (const char of text) {
+            narrativeText.textContent += char;
+            await new Promise(r => setTimeout(r, char === '.' ? 80 : char === ',' ? 40 : 25));
+        }
+        narrativeText.classList.remove('typing');
+    }
+
+    // Fade out
+    function fadeOutNarrative() {
+        return new Promise(resolve => {
+            narrativeText.classList.remove('visible');
+            setTimeout(resolve, 500);
+        });
+    }
+
+    // Fetch narrative from API
+    async function fetchNarrative() {
+        try {
+            const url = `/api/narrative?token=${SORA_CONFIG.TOKEN_ADDRESS}&audio=${storyState.soundEnabled}`;
+            const res = await fetch(url);
+            return await res.json();
+        } catch (e) {
+            console.log('Narrative fetch error:', e);
+            return null;
+        }
+    }
+
+    // Display narrative
+    async function displayNarrative(data) {
+        if (!data || !data.narrative) return;
+
+        eraDisplay.textContent = eraNames[data.era] || data.era;
+        beatDisplay.textContent = '#' + data.beatCount;
+        storyValue.textContent = 'Beat #' + data.beatCount;
+
+        if (data.marketCap) {
+            priceValue.textContent = '$' + Math.round(data.marketCap).toLocaleString();
+            priceValue.className = 'pipeline-value' + (data.momentum === 'UP' ? ' up' : data.momentum === 'DOWN' ? ' down' : '');
+            priceIcon.className = 'pipeline-icon price' + (data.momentum === 'DOWN' ? ' down' : '');
+        }
+
+        await fadeOutNarrative();
+        await typeNarrative(data.narrative);
+
+        // Play audio if enabled
+        if (storyState.soundEnabled && data.audio) {
+            try {
+                const blob = new Blob([Uint8Array.from(atob(data.audio), c => c.charCodeAt(0))], { type: 'audio/mp3' });
+                storyAudio.src = URL.createObjectURL(blob);
+                storyAudio.play();
+            } catch (e) { console.log('Audio error:', e); }
+        }
+    }
+
+    // Main loop
+    async function narrativeLoop() {
+        const data = await fetchNarrative();
+        await displayNarrative(data);
+    }
+
+    // Sound toggle
+    soundBtn.addEventListener('click', () => {
+        storyState.soundEnabled = !storyState.soundEnabled;
+        soundBtn.classList.toggle('active', storyState.soundEnabled);
+        soundIcon.textContent = storyState.soundEnabled ? '🔊' : '🔇';
+        soundLabel.textContent = storyState.soundEnabled ? 'Sound On' : 'Enable Sound';
+    });
+
+    // Start
+    narrativeText.classList.add('visible');
+    narrativeLoop();
+    setInterval(narrativeLoop, SORA_CONFIG.NARRATIVE_INTERVAL);
+    </script>
+</body>
+</html>
